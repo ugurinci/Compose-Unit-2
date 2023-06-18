@@ -5,7 +5,9 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,14 +38,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ugurinci.composeunit2.ui.theme.ComposeUnit2Theme
 import java.text.NumberFormat
 
@@ -59,8 +64,80 @@ class MainActivity : ComponentActivity() {
                     /*Greeting("Android")*/
                     /*DiceRoller()*/
                     /*Lemonade()*/
-                    TipCalculator()
+                    /*TipCalculator()*/
+                    ArtSpace()
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun ArtSpace() {
+    var index by remember { mutableStateOf(1) }
+    val paint = when (index) {
+        1 -> R.drawable.mona_lisa
+        2 -> R.drawable.starry_night
+        else -> R.drawable.girl_with_a_pearl_earring
+    }
+    val paintName = when (index) {
+        1 -> "Mona Lisa"
+        2 -> "Starry Night"
+        else -> "Girl with a Pearl Earring\n"
+    }
+    val artist = when (index) {
+        1 -> "Leonardo da Vinci"
+        2 -> "Vincent van Gogh"
+        else -> "Johannes Vermeer"
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Box(
+            modifier = Modifier.shadow(elevation = 1.dp)
+        ) {
+            Image(
+                painter = painterResource(paint),
+                artist,
+                modifier = Modifier.padding(all = 20.dp)
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFECEBF4))
+                .padding(all = 20.dp)
+        ) {
+            Text(text = paintName, fontSize = 32.sp)
+            Text(text = artist, fontWeight = FontWeight.Bold)
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(
+                onClick = {
+                    index--
+                    if (index == 0) {
+                        index = 3
+                    }
+                }
+            ) {
+                Text(text = "previous")
+            }
+            Button(
+                onClick = {
+                    index++
+                    if (index == 3) {
+                        index = 0
+                    }
+                }
+            ) {
+                Text(text = "next")
             }
         }
     }
@@ -235,6 +312,7 @@ fun Preview() {
         /*Greeting("Android")*/
         /*DiceRoller()*/
         /*Lemonade()*/
-        TipCalculator()
+        /*TipCalculator()*/
+        ArtSpace()
     }
 }
